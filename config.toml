@@ -38,7 +38,7 @@ ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
   subtitle = "A Hugo Theme"
   brand = "Blackburn"
   googleAnalytics = "Your Google Analytics tracking ID"
-  disqus = "cdriveraus"
+  disqus = "cdriver"
   # CSS name for highlight.js
   highlightjs = "androidstudio"
   highlightjs_extra_languages = ["yaml"]
