@@ -1,3 +1,0 @@
-[submodule "path_to_submodule"] 
-path = themes/blackburn 
-url = git://yoshiharuyamashita/blackburn.git
