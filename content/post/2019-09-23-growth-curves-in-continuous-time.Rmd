@@ -1,0 +1,82 @@
+---
+title: Growth curves in continuous time
+author: Charles Driver
+date: '2019-09-23'
+slug: growth-curves-in-continuous-time
+categories: []
+tags: []
+description: ''
+topics: []
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(collapse = TRUE,cache=TRUE,warning=FALSE,message=FALSE,results='hide')
+```
+
+#  Installation and loading of ctsem
+Within R, simply run:
+```{r eval=FALSE}
+install.packages('ctsem') 
+```
+
+```{r message=FALSE,warning=FALSE}
+library(ctsem)
+```
+This should work reliably for most / all cases -- occasionally the rstan installation does not work smoothly, and errors can occur when models that require compilation (more complex models) are specified. In such cases, the ctsem github page <https://github.com/cdriveraus/ctsem> offers some remedies, the Stan forum is very helpful <https://discourse.mc-stan.org/>, or you can get in touch with me...
+
+
+# Data 
+ctsem uses long format data, requires time and id columns, as well as at least one indicator / manifest variable. For this example we will use the ChickWeight dataset provided within R, showing growth of chicks over time.
+
+```{r}
+library(ggplot2)
+ggplot(data = ChickWeight,aes(x=Time, y=weight, color=Chick)) +geom_line()
+```
+
+# Model
+To fit a model using ctsem, the model is first specified using the ctModel function, then fit using the ctStanFit function. The default model structure contains many free parameters:
+```{r}
+m <- ctModel(type = 'stanct', 
+  manifestNames = c('weight'), 
+  id='Chick',
+  time='Time',
+  LAMBDA = diag(1))
+  
+#ctModelLatex(m)
+```
+
+So we will use a more restrictive, linear growth model:
+
+```{r}
+m1 <- ctModel(type = 'stanct',
+  manifestNames = c('weight'), 
+  latentNames=c('weight'),
+  id='Chick',
+  time='Time',
+  DRIFT= 0,
+  DIFFUSION=0,
+  CINT='cint1||FALSE',
+  T0MEANS='t0m1||FALSE',
+  T0VAR=0, #only need to specify when t0means are not individually varying
+  LAMBDA = 1,
+  MANIFESTMEANS=0,
+  MANIFESTVAR='merror')
+
+#ctModelLatex(m1) #compile latex and view within subject model
+```
+
+# Fit
+```{r}
+f1 <- ctStanFit(datalong = ChickWeight, ctstanmodel = m1, 
+  optimize=TRUE, nopriors=TRUE)
+
+```
+
+Then we can use summary and plotting functions:
+```{r }
+summary(f1)
+
+#plots of individual subject models v data
+ctKalman(f1,plot=TRUE,subjects=1,kalmanvec=c('y','ysmooth'),timestep=.01)
+ctKalman(f1,plot=TRUE,subjects=1:3,kalmanvec=c('y','ysmooth'),timestep=.01)
+```

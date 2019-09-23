@@ -1,0 +1,67 @@
+---
+title: Growth curves in continuous time
+author: Charles Driver
+date: '2019-09-23'
+slug: growth-curves-in-continuous-time
+categories: []
+tags: []
+description: ''
+topics: []
+---
+
+
+
+<div id="installation-and-loading-of-ctsem" class="section level1">
+<h1>Installation and loading of ctsem</h1>
+<p>Within R, simply run:</p>
+<pre class="r"><code>install.packages(&#39;ctsem&#39;) </code></pre>
+<pre class="r"><code>library(ctsem)</code></pre>
+<p>This should work reliably for most / all cases – occasionally the rstan installation does not work smoothly, and errors can occur when models that require compilation (more complex models) are specified. In such cases, the ctsem github page <a href="https://github.com/cdriveraus/ctsem" class="uri">https://github.com/cdriveraus/ctsem</a> offers some remedies, the Stan forum is very helpful <a href="https://discourse.mc-stan.org/" class="uri">https://discourse.mc-stan.org/</a>, or you can get in touch with me…</p>
+</div>
+<div id="data" class="section level1">
+<h1>Data</h1>
+<p>ctsem uses long format data, requires time and id columns, as well as at least one indicator / manifest variable. For this example we will use the ChickWeight dataset provided within R, showing growth of chicks over time.</p>
+<pre class="r"><code>library(ggplot2)
+ggplot(data = ChickWeight,aes(x=Time, y=weight, color=Chick)) +geom_line()</code></pre>
+<p><img src="/post/2019-09-23-growth-curves-in-continuous-time_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+</div>
+<div id="model" class="section level1">
+<h1>Model</h1>
+<p>To fit a model using ctsem, the model is first specified using the ctModel function, then fit using the ctStanFit function. The default model structure contains many free parameters:</p>
+<pre class="r"><code>m &lt;- ctModel(type = &#39;stanct&#39;, 
+  manifestNames = c(&#39;weight&#39;), 
+  id=&#39;Chick&#39;,
+  time=&#39;Time&#39;,
+  LAMBDA = diag(1))
+  
+#ctModelLatex(m)</code></pre>
+<p>So we will use a more restrictive, linear growth model:</p>
+<pre class="r"><code>m1 &lt;- ctModel(type = &#39;stanct&#39;,
+  manifestNames = c(&#39;weight&#39;), 
+  latentNames=c(&#39;weight&#39;),
+  id=&#39;Chick&#39;,
+  time=&#39;Time&#39;,
+  DRIFT= 0,
+  DIFFUSION=0,
+  CINT=&#39;cint1||FALSE&#39;,
+  T0MEANS=&#39;t0m1||FALSE&#39;,
+  T0VAR=0, #only need to specify when t0means are not individually varying
+  LAMBDA = 1,
+  MANIFESTMEANS=0,
+  MANIFESTVAR=&#39;merror&#39;)
+
+#ctModelLatex(m1) #compile latex and view within subject model</code></pre>
+</div>
+<div id="fit" class="section level1">
+<h1>Fit</h1>
+<pre class="r"><code>f1 &lt;- ctStanFit(datalong = ChickWeight, ctstanmodel = m1, 
+  optimize=TRUE, nopriors=TRUE)</code></pre>
+<p>Then we can use summary and plotting functions:</p>
+<pre class="r"><code>summary(f1)
+
+#plots of individual subject models v data
+ctKalman(f1,plot=TRUE,subjects=1,kalmanvec=c(&#39;y&#39;,&#39;ysmooth&#39;),timestep=.01)</code></pre>
+<p><img src="/post/2019-09-23-growth-curves-in-continuous-time_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<pre class="r"><code>ctKalman(f1,plot=TRUE,subjects=1:3,kalmanvec=c(&#39;y&#39;,&#39;ysmooth&#39;),timestep=.01)</code></pre>
+<p><img src="/post/2019-09-23-growth-curves-in-continuous-time_files/figure-html/unnamed-chunk-7-2.png" width="672" /></p>
+</div>
