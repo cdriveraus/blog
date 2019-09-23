@@ -2,6 +2,10 @@
 title: Growth curves in continuous time
 author: Charles Driver
 date: '2019-09-23'
+header-includes:
+  - \usepackage{amsmath} 
+  - \usepackage{bm}
+  - \newcommand{\vect}[1]{\boldsymbol{\mathbf{#1}}}
 slug: growth-curves-in-continuous-time
 categories: []
 tags: []
@@ -33,6 +37,7 @@ library(ggplot2)
 ggplot(data = ChickWeight,aes(x=Time, y=weight, color=Chick)) +geom_line()
 ```
 
+
 # Model
 To fit a model using ctsem, the model is first specified using the ctModel function, then fit using the ctStanFit function. The default model structure contains many free parameters:
 ```{r}
@@ -42,9 +47,23 @@ m <- ctModel(type = 'stanct',
   time='Time',
   LAMBDA = diag(1))
   
-#ctModelLatex(m)
+ctModelLatex(m)
 ```
 
+
+```{r echo=FALSE}
+ctModelLatex(m,textsize = 'footnotesize',folder = './',filename = 'mdefaulttex')
+knitr::include_graphics("./post/mdefaulttex.pdf")
+```
+
+<iframe src="https://docs.google.com/gview?url=https://cdriver.netlify.com/post/mdefaulttex.pdf&embedded=true" style="width:600px; height:500px;" frameborder="0"></iframe>
+
+
+<img src="/post/mdefaulttex.pdf">
+
+<object data="/post/mdefaulttex.pdf" type="application/pdf" width="300" height="200">
+<a href="/post/mdefaulttex.pdf">test.pdf</a>
+</object>
 So we will use a more restrictive, linear growth model:
 
 ```{r}
