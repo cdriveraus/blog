@@ -52,16 +52,17 @@ ctModelLatex(m)
 
 
 ```{r echo=FALSE}
-ctModelLatex(m,textsize = 'footnotesize',folder = './',filename = 'mdefaulttex')
-knitr::include_graphics("./post/mdefaulttex.pdf")
+ctModelLatex(m,textsize = 'footnotesize',folder = './',filename = 'mdefaulttex',open=FALSE)
+system(command = 'pdfcrop mdefaulttex.pdf mdefaulttex2.pdf')
+knitr::include_graphics("mdefaulttex2.pdf")
 ```
 
-<iframe src="https://docs.google.com/gview?url=https://cdriver.netlify.com/post/mdefaulttex.pdf&embedded=true" style="width:600px; height:500px;" frameborder="0"></iframe>
+<iframe src="https://docs.google.com/gview?url=https://cdriver.netlify.com/post/mdefaulttex2.pdf&embedded=true" style="width:600px; height:500px;" frameborder="0"></iframe>
 
 
-<img src="/post/mdefaulttex.pdf">
+<img src="/post/mdefaulttex2.pdf">
 
-<object data="/post/mdefaulttex.pdf" type="application/pdf" width="300" height="200">
+<object data="/post/mdefaulttex2.pdf" type="application/pdf" width="300" height="200">
 <a href="/post/mdefaulttex.pdf">test.pdf</a>
 </object>
 So we will use a more restrictive, linear growth model:
