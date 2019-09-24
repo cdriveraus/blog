@@ -57,7 +57,7 @@ system(command = 'pdfcrop mdefaulttex.pdf mdefaulttex2.pdf')
 knitr::include_graphics("mdefaulttex2.pdf")
 ```
 
-<iframe src="https://docs.google.com/gview?url=https://cdriver.netlify.com/post/mdefaulttex2.pdf&embedded=true"  frameborder="0"></iframe>
+<iframe src="https://docs.google.com/gview?url=https://cdriver.netlify.com/post/mdefaulttex2.pdf&embedded=true" style="width:600px; height:800px;" frameborder="0"></iframe>
 
 
 <img src="/post/mdefaulttex2.pdf">
