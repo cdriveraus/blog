@@ -13,68 +13,79 @@
   \begin{align*}
   &\underbrace{\mathrm{d}
     \begin{bmatrix}
-\text{eta1}
+\text{ss\_level}\\ 
+\text{ss\_velocity}
 \end{bmatrix} 
     \big{(}t\big{)}}_{\mathrm{d} \vect{\eta} (t)}	=  \left(
       \underbrace{
         \begin{bmatrix}
-\text{drift\_eta1\_eta1}
+0 & 1\\ 
+-0.367 & -0.336
 \end{bmatrix}
       }_{\underbrace{\vect{A}}_\textrm{DRIFT}} \underbrace{
         \begin{bmatrix}
-\text{eta1}
+\text{ss\_level}\\ 
+\text{ss\_velocity}
 \end{bmatrix} 
         \big{(}t\big{)}
       }_{\vect{\eta} (t)}	+ \underbrace{
         \begin{bmatrix}
+0\\ 
 0
 \end{bmatrix}
       }_{\underbrace{\vect{b}}_\textrm{CINT}}\right) \mathrm{d}t \quad + \nonumber \\ \\
     & \qquad \qquad \quad cholsdcor\bigg(\underbrace{
       \begin{bmatrix}
-\text{diffusion\_eta1\_eta1}
+0 & 0\\ 
+0 & 19.8
 \end{bmatrix}
     }_{\underbrace{\vect{G}}_\textrm{DIFFUSION}}\bigg)
     \underbrace{\mathrm{d}
       \begin{bmatrix}
-W_{1}
+W_{1}\\ 
+W_{2}
 \end{bmatrix} 
       (t)}_{\mathrm{d} \vect{W}(t)} \\ \\
           &\underbrace{
             \begin{bmatrix}
-W_{1}
+W_{1}\\ 
+W_{2}
 \end{bmatrix}  
             (t+u)}_{\vect{W}(t+u)} -   \underbrace{\begin{bmatrix}
-W_{1}
+W_{1}\\ 
+W_{2}
 \end{bmatrix}  
             (t)}_{\vect{W}(t)} \sim  \mathrm{N} \left(
               \begin{bmatrix}
+0\\ 
 0
 \end{bmatrix}, \begin{bmatrix}
-\text{u-t}
+\text{u-t} & 0\\ 
+0 & \text{u-t}
 \end{bmatrix} \right) \\ \\
 &\underbrace{
       \begin{bmatrix}
-\text{weight}
+\text{sunspots}
 \end{bmatrix}  
       (t)}_{\vect{Y}(t)} = 
         \underbrace{
           \begin{bmatrix}
-1
+1 & 0
 \end{bmatrix} 
         }_{\underbrace{\vect{\Lambda}}_\textrm{LAMBDA}} \underbrace{
           \begin{bmatrix}
-\text{eta1}
+\text{ss\_level}\\ 
+\text{ss\_velocity}
 \end{bmatrix} 
           (t)}_{\vect{\eta}(t)} +
         \underbrace{
           \begin{bmatrix}
-\text{manifestmeans\_weight}
+42.019
 \end{bmatrix} 
         }_{\underbrace{\vect{\tau}}_\textrm{MANIFESTMEANS}} + 
               \underbrace{
                 \begin{bmatrix}
-\text{manifestvar\_weight\_weight}
+29.757
 \end{bmatrix}  
               }_{\underbrace{\vect{\Theta}}_\textrm{MANIFESTVAR}}
               \underbrace{
