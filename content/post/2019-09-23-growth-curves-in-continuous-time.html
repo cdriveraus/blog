@@ -3,18 +3,12 @@ title: Growth curves in continuous time
 author: Charles Driver
 date: '2019-09-23'
 header-includes:
-  - \usepackage{amsmath} 
-  - \usepackage{bm}
-  - \newcommand{\vect}[1]{\boldsymbol{\mathbf{#1}}}
 slug: growth-curves-in-continuous-time
 categories: []
 tags: []
 description: ''
 topics: []
 ---
-
-
-
 
 
 
@@ -42,13 +36,8 @@ ggplot(data = ChickWeight,aes(x=Time, y=weight, color=Chick)) +geom_line()</code
   LAMBDA = diag(1))
   
 ctModelLatex(m)</code></pre>
-<iframe src="https://docs.google.com/gview?url=https://cdriver.netlify.com/post/mdefaulttex2.pdf&amp;embedded=true" style="width:600px; height:800px;" frameborder="0">
-</iframe>
-<p><img src="/post/mdefaulttex2.pdf"></p>
-<object data="/post/mdefaulttex2.pdf" type="application/pdf" width="300" height="200">
-<a href="/post/mdefaulttex2.pdf">test.pdf</a>
-</object>
-<p>So we will use a more restrictive, linear growth model:</p>
+<p><img src="/post/2019-09-23-growth-curves-in-continuous-time_files/figure-html/TEX-1.png" width="672" /></p>
+<p>To begin we will use a simpler more restrictive, linear growth model:</p>
 <pre class="r"><code>m1 &lt;- ctModel(type = &#39;stanct&#39;,
   manifestNames = c(&#39;weight&#39;), 
   latentNames=c(&#39;weight&#39;),
@@ -74,7 +63,7 @@ ctModelLatex(m)</code></pre>
 
 #plots of individual subject models v data
 ctKalman(f1,plot=TRUE,subjects=1,kalmanvec=c(&#39;y&#39;,&#39;ysmooth&#39;),timestep=.01)</code></pre>
-<p><img src="/post/2019-09-23-growth-curves-in-continuous-time_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p><img src="/post/2019-09-23-growth-curves-in-continuous-time_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
 <pre class="r"><code>ctKalman(f1,plot=TRUE,subjects=1:3,kalmanvec=c(&#39;y&#39;,&#39;ysmooth&#39;),timestep=.01)</code></pre>
-<p><img src="/post/2019-09-23-growth-curves-in-continuous-time_files/figure-html/unnamed-chunk-8-2.png" width="672" /></p>
+<p><img src="/post/2019-09-23-growth-curves-in-continuous-time_files/figure-html/unnamed-chunk-7-2.png" width="672" /></p>
 </div>

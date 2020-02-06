@@ -3,9 +3,6 @@ title: Growth curves in continuous time
 author: Charles Driver
 date: '2019-09-23'
 header-includes:
-  - \usepackage{amsmath} 
-  - \usepackage{bm}
-  - \newcommand{\vect}[1]{\boldsymbol{\mathbf{#1}}}
 slug: growth-curves-in-continuous-time
 categories: []
 tags: []
@@ -15,6 +12,9 @@ topics: []
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(collapse = TRUE,cache=TRUE,warning=FALSE,message=FALSE,results='hide')
+slug <- 'growth-curves-in-continuous-time' 
+dir.create(slug)
+savedir <- normalizePath(paste0(getwd(),'/',slug)) 
 ```
 
 #  Installation and loading of ctsem
@@ -51,21 +51,18 @@ ctModelLatex(m)
 ```
 
 
-```{r echo=FALSE}
-ctModelLatex(m,textsize = 'footnotesize',folder = './',filename = 'mdefaulttex',open=FALSE)
-system(command = 'pdfcrop mdefaulttex.pdf mdefaulttex2.pdf')
-knitr::include_graphics("mdefaulttex2.pdf")
+```{r TEX,echo=FALSE,fig.height=6}
+ctModelLatex(m,textsize = 'footnotesize', folder=savedir,filename = 'mdefaulttex',open=FALSE)
+library(magick)    
+tiger <- image_trim(image_read_pdf(paste0(savedir,'/mdefaulttex.pdf'),density = 300))
+plot(tiger) 
+#image_write(tiger,paste0(savedir,'/mdefaulttex.png'),format = 'png')
+#knitr::include_graphics(paste0(savedir,'/mdefaulttex.png')) 
+#![tex](mdefaulttex.png)
 ```
 
-<iframe src="https://docs.google.com/gview?url=https://cdriver.netlify.com/post/mdefaulttex2.pdf&embedded=true" style="width:600px; height:800px;" frameborder="0"></iframe>
 
-
-<img src="/post/mdefaulttex2.pdf">
-
-<object data="/post/mdefaulttex2.pdf" type="application/pdf" width="300" height="200">
-<a href="/post/mdefaulttex2.pdf">test.pdf</a>
-</object>
-So we will use a more restrictive, linear growth model:
+To begin we will use a simpler more restrictive, linear growth model:
 
 ```{r}
 m1 <- ctModel(type = 'stanct',
